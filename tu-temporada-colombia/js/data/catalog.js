@@ -728,7 +728,6 @@ export const PRODUCTS = [
   "c": "SALUD",
   "p": 119900,
   "f": [
-   "Presentación premium: envase de 500 ml",
    "Incluye 15 sachets de 20 ml cada uno",
    "Concentrado líquido a base de frutas",
    "Ingredientes indicados en el empaque: chontaduro, borojó, noni y guaraná",
