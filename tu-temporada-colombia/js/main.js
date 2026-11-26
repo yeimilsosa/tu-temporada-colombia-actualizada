@@ -1,9 +1,8 @@
 /**
- * Punto de entrada: intro 3D, enrutador por hash y marketplace.
- * Rutas: (vacío) portada con intro + marketplace · #catalogo y #cat-N marketplace filtrado ·
+ * Punto de entrada: enrutador por hash y marketplace.
+ * Rutas: (vacío) portada con el marketplace · #catalogo y #cat-N marketplace filtrado ·
  * #producto-N detalle · #favoritos guardados. #carrito y #colecciones redirigen al catálogo.
  */
-import { createJourney } from "./intro/journey.js";
 import { PRODUCTS, CATEGORIES, esc, waLink, activeCategories, seo } from "./shop/catalog.js";
 import { state, toggleSaved, pushRecent, onChange } from "./shop/store.js";
 import * as V from "./shop/views.js";
@@ -18,7 +17,6 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
 const app = $("#app");
 const header = $("#header");
-const journeyEl = $("#journey");
 const toastEl = $(".toast");
 const searchInput = $("#hsearch");
 const searchClear = $("[data-search-clear]");
@@ -26,56 +24,6 @@ const DEFAULT_TITLE = "Tu Temporada Colombia · Tienda en línea";
 const smoothScroll = () => (prefersReducedMotion() ? "auto" : "smooth");
 
 let view = null;
-let journeyDone = false;
-let clipped = null;
-
-/* ---------- Intro ---------- */
-const journey = createJourney(journeyEl, {
-  onProgress(p, done) {
-    if (done !== journeyDone) { journeyDone = done; syncChrome(); }
-  },
-  onLayout: pullMarket,
-  onPlate: clipMarket,
-});
-
-/** El catálogo se revela con la misma máscara circular que la tienda (centro en el pin). */
-function clipMarket({ x, y, r, full, opacity }) {
-  pinMarket();
-  if (view !== "market" || journeyEl.hidden || full) {
-    if (clipped !== "") { app.style.clipPath = ""; app.style.opacity = ""; clipped = ""; }
-    return;
-  }
-  const top = app.getBoundingClientRect().top;
-  const v = `circle(${r.toFixed(1)}px at ${x.toFixed(1)}px ${(y - top).toFixed(1)}px)`;
-  if (v !== clipped) { app.style.clipPath = v; clipped = v; }
-  app.style.opacity = opacity < 1 ? opacity.toFixed(3) : "";
-}
-
-/**
- * Mientras dura la intro, el marketplace se mantiene fijo en la parte superior de la pantalla
- * (oculto por la máscara). Así, cuando la máscara se abre, se ve ya en su sitio: header,
- * título, categorías, filtros y la primera fila de productos, sin pantallas vacías.
- */
-function pinMarket() {
-  if (view !== "market" || journeyEl.hidden) { app.style.transform = ""; return; }
-  const end = journeyEl.offsetTop + journeyEl.offsetHeight - window.innerHeight;
-  const dy = Math.min(0, window.scrollY - end);
-  app.style.transform = dy < 0 ? `translate3d(0, ${dy}px, 0)` : "";
-}
-window.addEventListener("scroll", pinMarket, { passive: true });
-
-/** El marketplace se superpone a la última pantalla de la intro, justo debajo de la bienvenida. */
-function pullMarket(overlap = journey.overlap()) {
-  app.style.marginTop = view === "market" && !journeyEl.hidden ? `${-overlap}px` : "";
-}
-
-(function introEntrance() {
-  const g = window.gsap;
-  if (!g || prefersReducedMotion()) return;
-  g.from("[data-intro-line]", { yPercent: 112, duration: 1.7, ease: "expo.out", delay: 1.1, stagger: 0.14 });
-  g.from(".journey__cue, .journey__top", { opacity: 0, duration: 1.2, delay: 2.2, ease: "power1.out", clearProps: "opacity" });
-})();
-
 /* ---------- Cabecera ---------- */
 initTheme();
 initCards();
@@ -108,9 +56,7 @@ function setMenu(open) {
 menuBtn.addEventListener("click", () => setMenu(!menu.classList.contains("is-open")));
 
 function syncChrome() {
-  const show = view !== "market" || journeyEl.hidden || journeyDone;
-  header.classList.toggle("is-visible", show);
-  document.body.classList.toggle("is-home", view === "market" && !journeyEl.hidden && !journeyDone);
+  header.classList.add("is-visible");
 }
 
 /* ---------- Búsqueda (header) ---------- */
@@ -218,11 +164,9 @@ function goMarket() {
   else { updateMarket({ animate: true }); landOnMarket(true); }
 }
 
-/** Posición en la que la intro terminó y el marketplace queda bajo la bienvenida. */
+/** Lleva el marketplace al inicio de la página. */
 function landOnMarket(smooth) {
-  const top = journeyEl.hidden ? 0 : journeyEl.offsetTop + journeyEl.offsetHeight - window.innerHeight + 1;
-  window.scrollTo({ top, behavior: smooth ? smoothScroll() : "auto" });
-  if (!smooth) journey.snap();
+  window.scrollTo({ top: 0, behavior: smooth ? smoothScroll() : "auto" });
 }
 
 /** Lleva la barra de categorías a la vista si quedó por encima (al cambiar de filtro). */
@@ -260,15 +204,13 @@ function route(opts = {}) {
   if (r.name === "market" && view === "market") {
     if (r.cat !== null) state.filters.cat = r.cat;
     updateMarket({ animate: true });
-    if (r.land) { if (!journeyDone) landOnMarket(true); else revealBar(); }
+    if (r.land) revealBar();
     return;
   }
 
   const prev = view;
   view = r.name;
   const market = view === "market";
-  journeyEl.hidden = !market;
-  journey.setActive(market);
   document.body.classList.toggle("is-market", market);
 
   if (market) {
@@ -276,18 +218,9 @@ function route(opts = {}) {
     app.innerHTML = V.market(state.filters);
     bindMarket();
     updateMarket({ animate: false });
-    pullMarket();
     syncChrome();
-    requestAnimationFrame(() => {
-      journey.refresh();
-      if (opts.land || r.land || (prev && prev !== "market")) landOnMarket(false);
-    });
+    if (opts.land || r.land || (prev && prev !== "market")) landOnMarket(false);
   } else {
-    app.style.marginTop = "";
-    app.style.transform = "";
-    app.style.clipPath = "";
-    app.style.opacity = "";
-    clipped = "";
     if (view === "saved") {
       document.title = "Guardados · Tu Temporada Colombia";
       seo(null);
