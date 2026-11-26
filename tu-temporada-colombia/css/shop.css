@@ -906,122 +906,155 @@ html.popup-open { overflow: hidden; }
   .popup__card { transform: none; }
 }
 
-/* ---------- Carrusel destacado de categoría (js/shop/showcase.js) ---------- */
+/* ---------- Carrusel de categoría (js/shop/showcase.js) ---------- */
 .pdp__pres { margin-top: 6px; font-size: var(--fs-sm); color: var(--text-2); }
 
-.showcase { margin-bottom: clamp(36px, 5vw, 64px); }
+/* --per: productos a la vista (el destacado cuenta como dos desde tableta). */
+.showcase { --per: 4; --gap: 20px; margin-bottom: clamp(36px, 5vw, 64px); }
 .showcase__head {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 .showcase__title { font-size: var(--fs-lg); font-weight: 500; letter-spacing: -0.02em; }
 .showcase__sub { margin-top: 2px; font-size: var(--fs-sm); color: var(--muted); }
-.showcase__auto {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex: none;
-  height: 34px;
-  padding: 0 14px 0 10px;
+.showcase__nav { display: flex; align-items: center; gap: 8px; flex: none; }
+.showcase__count { margin-right: 6px; font-size: var(--fs-sm); color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.showcase__arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 50%;
   background: var(--surface);
-  color: var(--text-2);
-  font-size: var(--fs-xs);
-  transition: border-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
+  color: var(--text);
+  transition: border-color 0.3s var(--ease-out), opacity 0.3s var(--ease-out), transform 0.2s var(--ease-out);
 }
-.showcase__auto .icon { width: 16px; height: 16px; }
-.showcase__auto:hover { border-color: var(--text); color: var(--text); }
-.showcase__auto[aria-pressed="true"] { border-color: var(--text); color: var(--text); }
+.showcase__arrow .icon { width: 20px; height: 20px; }
+.showcase__arrow:hover:not(:disabled) { border-color: var(--text); }
+.showcase__arrow:active:not(:disabled) { transform: scale(0.94); }
+.showcase__arrow:disabled { opacity: 0.35; cursor: default; }
 
-.showcase__stage { position: relative; }
+/* Carril: scroll nativo con imán. El relleno deja ver las sombras de las tarjetas. */
 .showcase__track {
+  position: relative;
   display: flex;
+  align-items: stretch;
+  gap: var(--gap);
   overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 2px 18px;
+  margin: -6px -2px -18px;
   scroll-snap-type: x mandatory;
-  scroll-behavior: auto;
+  scroll-padding-inline: 2px;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--surface);
-  outline-offset: 3px;
   -webkit-overflow-scrolling: touch;
+  outline-offset: 2px;
 }
 .showcase__track::-webkit-scrollbar { display: none; }
 .showcase__track.is-dragging { scroll-snap-type: none; cursor: grabbing; user-select: none; }
-.showcase__track.is-dragging a { pointer-events: none; }
+.showcase__track.is-dragging a, .showcase__track.is-dragging button { pointer-events: none; }
 @media (hover: hover) and (pointer: fine) { .showcase__track { cursor: grab; } }
 
-.showcase__slide {
-  flex: 0 0 100%;
-  min-width: 0;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  display: grid;
-  grid-template-columns: 1fr;
-}
-.showcase__media {
+/* Ancho de una tarjeta: (carril - huecos) / productos a la vista. */
+.sc-card {
+  --unit: calc((100% - (var(--per) - 1) * var(--gap)) / var(--per));
   position: relative;
-  display: block;
-  aspect-ratio: 1 / 1;
+  flex: 0 0 var(--unit);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgba(17, 17, 17, 0.04), 0 6px 18px rgba(17, 17, 17, 0.05);
   overflow: hidden;
-  -webkit-user-drag: none;
+  transition: box-shadow 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
 }
-/* Foto completa, centrada y sin deformar: object-fit: contain conserva la proporción original. */
-.showcase__media img {
+@media (hover: hover) { .sc-card:hover { border-color: var(--line-strong); box-shadow: var(--shadow); } }
+
+/* Foto 1:1 completa, centrada y sin deformar (object-fit: contain). */
+.sc-card__media { position: relative; display: block; aspect-ratio: 1 / 1; overflow: hidden; -webkit-user-drag: none; }
+.sc-card__media img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  object-position: center;
-  padding: 4%;
+  padding: 8%;
   user-select: none;
   -webkit-user-drag: none;
 }
-.showcase__info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 20px 20px 24px;
+.sc-card__media img.is-studio { padding: 0; object-fit: cover; }
+.sc-card__fav { position: absolute; z-index: 2; }
+.sc-card__info { display: flex; flex-direction: column; flex: 1; padding: 14px 16px 16px; border-top: 1px solid var(--line); }
+.sc-card__cat { font-size: var(--fs-xs); color: var(--muted); }
+.sc-card__name {
+  margin-top: 4px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.6em;
 }
-.showcase__kicker { font-size: var(--fs-xs); color: var(--muted); letter-spacing: 0.02em; }
-.showcase__name { margin-top: 6px; font-size: clamp(1.25rem, 1rem + 1.1vw, 2rem); font-weight: 500; line-height: 1.15; letter-spacing: -0.02em; }
-.showcase__pres { margin-top: 8px; font-size: var(--fs-sm); color: var(--text-2); }
-.showcase__price { margin-top: 14px; font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem); font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-.showcase__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
-.showcase__actions .btn--solid { flex: 1 1 auto; }
+.sc-card__price { margin-top: 6px; font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.sc-card__price s { margin-left: 8px; font-weight: 400; font-size: var(--fs-xs); color: var(--muted); }
+.sc-card__actions { display: flex; gap: 8px; margin-top: auto; padding-top: 14px; }
+.sc-card__actions .btn { flex: 1 1 auto; height: 40px; padding: 0 14px; }
 
-.showcase__arrow {
+/* Destacado: el doble de ancho, foto a la izquierda y datos a la derecha, en tono invertido. */
+.sc-card--featured {
+  flex-basis: calc(2 * var(--unit) + var(--gap));
+  flex-direction: row;
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--surface);
+  box-shadow: 0 10px 30px rgba(17, 17, 17, 0.16);
+}
+.sc-card--featured .sc-card__media {
+  flex: 0 0 52%;
+  aspect-ratio: auto;
+  margin: 10px 0 10px 10px;
+  border-radius: 10px;
+  background: var(--surface);
+}
+.sc-card--featured .sc-card__media img { padding: 5%; }
+.sc-card--featured .sc-card__info { justify-content: center; border-top: 0; padding: 56px 22px 22px; }
+.sc-card--featured .sc-card__cat { color: color-mix(in srgb, var(--surface) 62%, transparent); }
+.sc-card--featured .sc-card__name { font-size: clamp(1.125rem, 0.9rem + 0.7vw, 1.5rem); line-height: 1.2; -webkit-line-clamp: 3; min-height: 0; }
+.sc-card--featured .sc-card__price { margin-top: 10px; font-size: clamp(1.5rem, 1.1rem + 1vw, 2rem); letter-spacing: -0.02em; }
+.sc-card--featured .sc-card__actions { flex-direction: column; margin-top: 18px; padding-top: 0; }
+.sc-card--featured .btn--solid { background: var(--surface); color: var(--text); }
+.sc-card--featured .btn--solid:hover { background: var(--silver); }
+.sc-card--featured .btn--ghost { background: transparent; color: var(--surface); border-color: color-mix(in srgb, var(--surface) 35%, transparent); }
+.sc-card--featured .btn--ghost:hover { border-color: var(--surface); }
+.sc-card__badge {
   position: absolute;
-  top: 50%;
   z-index: 2;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  margin-top: -22px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  top: 18px;
+  right: 18px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface);
   color: var(--text);
-  box-shadow: var(--shadow);
-  transition: border-color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
 }
-.showcase__arrow .icon { width: 20px; height: 20px; }
-.showcase__arrow:hover { border-color: var(--text); }
-.showcase__arrow:active { transform: scale(0.94); }
-.showcase__arrow--prev { left: 10px; }
-.showcase__arrow--next { right: 10px; }
+.sc-card--featured .sc-card__fav { left: 18px; top: 18px; right: auto; }
 
-.showcase__dots { display: flex; justify-content: center; gap: 4px; margin-top: 12px; }
-.showcase__dot { display: grid; place-items: center; width: 32px; height: 32px; }
+/* Puntos: uno por producto. Oscuros los que están a la vista; el destacado es un rombo. */
+.showcase__dots { display: flex; justify-content: center; flex-wrap: wrap; gap: 2px; margin-top: 12px; }
+.showcase__dot { display: grid; place-items: center; width: 28px; height: 28px; }
 .showcase__dot i {
   width: 8px;
   height: 8px;
@@ -1029,25 +1062,36 @@ html.popup-open { overflow: hidden; }
   background: var(--line-strong);
   transition: width 0.35s var(--ease-out), background-color 0.35s var(--ease-out);
 }
+.showcase__dot.is-in i { background: var(--text-2); }
 .showcase__dot[aria-current="true"] i { width: 22px; background: var(--text); }
+.showcase__dot--featured:not([aria-current="true"]) i { border-radius: 2px; transform: rotate(45deg); }
 
-/* Móvil: la foto ocupa casi todo el alto visible y las flechas quedan sobre ella. */
-@media (max-width: 759px) {
+/* Tableta grande y portátil pequeño: 3 a la vista (destacado + 1). */
+@media (max-width: 1180px) { .showcase { --per: 3; } }
+/* Tableta: 2,3 a la vista; el destacado se apila y ocupa casi todo el ancho. */
+@media (max-width: 900px) {
+  .showcase { --per: 2.3; --gap: 14px; }
+  .sc-card--featured { flex-basis: calc(1.7 * var(--unit) + var(--gap)); }
+  .sc-card--featured .sc-card__info { padding: 52px 16px 16px; }
+}
+/* Celular: una tarjeta y se asoma la siguiente. */
+@media (max-width: 640px) {
+  .showcase { --per: 1.25; --gap: 12px; }
+  .showcase__count { display: none; }
+  .showcase__arrow { width: 40px; height: 40px; }
   .showcase__head { align-items: flex-start; }
-  .showcase__media { aspect-ratio: auto; height: min(92vw, 62vh); }
-  .showcase__arrow { top: min(46vw, 31vh); width: 40px; height: 40px; margin-top: -20px; }
-  .showcase__arrow--prev { left: 6px; }
-  .showcase__arrow--next { right: 6px; }
-  .showcase__actions .btn { flex: 1 1 100%; }
+  .sc-card--featured { flex-basis: var(--unit); }
 }
-/* Tablet y computador: foto y datos lado a lado, proporcionales al ancho. */
-@media (min-width: 760px) {
-  .showcase__slide { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: stretch; }
-  .showcase__media { aspect-ratio: auto; height: clamp(360px, 42vw, 560px); }
-  .showcase__info { padding: 32px clamp(56px, 6vw, 88px) 32px clamp(20px, 3vw, 40px); }
-  .showcase__arrow--prev { left: 14px; }
-  .showcase__arrow--next { right: 14px; }
+/* Destacado apilado (foto arriba) cuando no hay espacio para dos columnas (celular). */
+@media (max-width: 640px) {
+  .sc-card--featured { flex-direction: column; }
+  .sc-card--featured .sc-card__media { flex: none; aspect-ratio: 1 / 1; margin: 10px 10px 0; }
+  .sc-card--featured .sc-card__info { padding: 16px 16px 18px; }
+  .sc-card--featured .sc-card__actions { flex-direction: row; flex-wrap: wrap; margin-top: auto; padding-top: 14px; }
+  .sc-card__badge { top: 20px; right: 20px; }
+  .sc-card--featured .sc-card__fav { left: 20px; top: 20px; }
 }
+@media (max-width: 380px) { .sc-card__actions .btn { padding: 0 10px; } }
 @media (prefers-reduced-motion: reduce) {
-  .showcase__dot i, .showcase__arrow { transition: none; }
+  .showcase__dot i, .showcase__arrow, .sc-card { transition: none; }
 }

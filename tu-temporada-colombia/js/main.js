@@ -11,7 +11,7 @@ import { observe, enterView, swap } from "./shop/motion.js";
 import { prefersReducedMotion } from "./core/env.js";
 import { initTheme } from "./core/theme.js";
 import { initCards } from "./shop/cards.js";
-import { initShowcase } from "./shop/showcase.js";
+import { initShowcase, syncShowcases } from "./shop/showcase.js";
 import { attachPromo, detachPromo } from "./shop/promo.js";
 import { initPopup } from "./shop/popup.js";
 
@@ -314,8 +314,8 @@ function updateMarket({ animate, reveal } = {}) {
   $("[data-meta]", app).innerHTML = V.meta(f, count);
   $("[data-count]", app).textContent = `${count} ${count === 1 ? "producto" : "productos"}`;
   const box = $("[data-results]", app);
-  if (animate) swap(box, html);
-  else { box.innerHTML = html; observe(app); }
+  if (animate) swap(box, html, () => syncShowcases(box));
+  else { box.innerHTML = html; syncShowcases(box); observe(app); }
   if (reveal) revealBar();
 }
 

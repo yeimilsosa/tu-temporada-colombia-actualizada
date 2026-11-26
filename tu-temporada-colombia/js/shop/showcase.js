@@ -1,118 +1,135 @@
 /**
- * Carrusel destacado de una categoría (datos: js/data/showcases.js).
+ * Carrusel de productos de una categoría (datos: js/data/showcases.js).
  *
- * - Un producto por vista en todos los tamaños: en móvil la foto va arriba y los datos debajo;
- *   desde 760 px la foto y los datos quedan lado a lado.
- * - El desplazamiento es nativo (scroll-snap): el dedo en móvil y el trackpad en computador
- *   funcionan sin código extra. Con mouse también se puede arrastrar.
- * - Flechas laterales, puntos inferiores y ← → con el foco dentro.
- * - No avanza solo: el botón «Automático» activa o desactiva el cambio cada N segundos.
+ * - Todos los productos de la categoría en una sola fila deslizable; el destacado va primero,
+ *   con etiqueta y tarjeta más grande.
+ * - Productos visibles según el ancho (CSS): ~1,2 en celular (se asoma el siguiente), 2–3 en
+ *   tableta y 4 en computador (el destacado ocupa el lugar de dos).
+ * - Desplazamiento nativo con scroll-snap: dedo, trackpad y rueda del mouse funcionan solos;
+ *   además se puede arrastrar con el mouse.
+ * - Flechas (avanzan un producto), puntos (uno por producto, marcan los que están a la vista)
+ *   y contador «1–3 de 6». ← → con el foco en el carrusel.
+ * - Solo se descargan las fotos de tarjeta (-sm) y las que están fuera de pantalla son diferidas.
  *
- * Todos los eventos están delegados en document: el carrusel se vuelve a pintar cada vez que
- * cambia un filtro y no hace falta volver a conectarlo.
+ * Los eventos están delegados en document: el carrusel se vuelve a pintar cada vez que cambia
+ * un filtro y no hace falta volver a conectarlo.
  */
 import { SHOWCASES } from "../data/showcases.js";
-import { PRODUCTS, esc, formatCOP, label, waLink, small, large, productImages, isStudio } from "./catalog.js";
+import { PRODUCTS, esc, formatCOP, label, waLink, small, productImages, isStudio } from "./catalog.js";
+import { isSaved } from "./store.js";
 import { prefersReducedMotion } from "../core/env.js";
 
 const icon = (id) => `<svg class="icon" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 
-/** Índices de PRODUCTS que van en el carrusel de la categoría (vacío si no tiene). */
+/** Índices de PRODUCTS del carrusel de la categoría, en orden (vacío si no tiene carrusel). */
 export function showcaseIndexes(cat) {
   const s = SHOWCASES[cat];
   if (!s) return [];
-  return s.ids.map((id) => PRODUCTS.findIndex((p) => p.id === id)).filter((i) => i >= 0);
+  const byId = (id) => PRODUCTS.findIndex((p) => p.id === id && p.c === cat);
+  const first = [s.featured, ...(s.order || [])].map(byId).filter((i) => i >= 0);
+  const rest = PRODUCTS.map((p, i) => i).filter((i) => PRODUCTS[i].c === cat && !first.includes(i));
+  return [...new Set([...first, ...rest])];
 }
 
-function slide(i, k, n) {
+function item(i, k, n, featured, badge) {
   const p = PRODUCTS[i];
   const src = productImages(p)[0];
   const name = esc(p.n);
-  const msg = `Hola, quiero comprar: ${p.n}${p.pr ? " - " + p.pr : ""} (Ref. ${p.id}) - ${formatCOP(p.p)}`;
+  const ref = p.id ? ` (Ref. ${p.id})` : "";
+  const wa = waLink(`Hola, me interesa: ${p.n}${p.pr ? " - " + p.pr : ""}${ref}${p.p != null ? " - " + formatCOP(p.p) : ""}`);
   const img = src
-    ? `<img src="${large(src)}" srcset="${small(src)} 720w, ${large(src)} 1600w" sizes="(max-width: 760px) 92vw, 50vw"
-        alt="${name}" ${k ? 'loading="lazy" ' : ""}decoding="async" draggable="false"${isStudio(src) ? ' class="is-studio"' : ""}>`
-    : "";
-  return `<article class="showcase__slide" role="group" aria-roledescription="producto" aria-label="${k + 1} de ${n}: ${name}" data-sc-slide="${k}">
-    <a class="showcase__media" href="#producto-${i}" tabindex="-1" aria-hidden="true">${img}</a>
-    <div class="showcase__info">
-      <p class="showcase__kicker">${esc(label(p.c))}</p>
-      <h3 class="showcase__name"><a href="#producto-${i}">${name}</a></h3>
-      ${p.pr ? `<p class="showcase__pres">${esc(p.pr)}</p>` : ""}
-      <p class="showcase__price">${formatCOP(p.p)}</p>
-      <div class="showcase__actions">
-        <a class="btn btn--solid" href="${waLink(msg)}" target="_blank" rel="noopener">${icon("chat")}Comprar por WhatsApp</a>
-        <a class="btn btn--ghost" href="#producto-${i}">Ver detalle</a>
+    ? `<img src="${small(src)}" alt="${name}" ${k > 2 ? 'loading="lazy" ' : ""}decoding="async" draggable="false"${isStudio(src) ? ' class="is-studio"' : ""}>`
+    : `<span class="card__placeholder">${icon("image")}Imagen no disponible</span>`;
+  const on = isSaved(i);
+  return `<article class="sc-card${featured ? " sc-card--featured" : ""}" data-sc-item="${k}" aria-label="${k + 1} de ${n}: ${name}">
+    <a class="sc-card__media" href="#producto-${i}" tabindex="-1" aria-hidden="true">${img}</a>
+    ${featured && badge ? `<span class="sc-card__badge">${esc(badge)}</span>` : ""}
+    <button class="sc-card__fav card__fav" type="button" data-save="${i}" data-name="${name}" aria-pressed="${on}" aria-label="${on ? "Quitar de guardados" : "Guardar"}: ${name}">${icon("heart")}</button>
+    <div class="sc-card__info">
+      <p class="sc-card__cat">${esc(label(p.c))}${p.pr ? ` · ${esc(p.pr)}` : ""}</p>
+      <h3 class="sc-card__name"><a href="#producto-${i}">${name}</a></h3>
+      <p class="sc-card__price${p.p == null ? " price--ask" : ""}">${formatCOP(p.p)}${p.o > p.p ? `<s>${formatCOP(p.o)}</s>` : ""}</p>
+      <div class="sc-card__actions">
+        <a class="btn btn--solid" href="${wa}" target="_blank" rel="noopener">${icon("chat")}<span>${featured ? "Comprar por WhatsApp" : "Comprar"}</span></a>
+        ${featured ? `<a class="btn btn--ghost" href="#producto-${i}">Ver detalle</a>` : ""}
       </div>
     </div>
   </article>`;
 }
 
-/** HTML del carrusel para los índices dados (ya filtrados). */
+/** HTML del carrusel con los índices dados (ya filtrados y en orden). */
 export function showcase(cat, list) {
   const s = SHOWCASES[cat];
   if (!s || !list.length) return "";
   const n = list.length;
-  const multi = n > 1;
-  return `<section class="showcase" aria-roledescription="carrusel" aria-label="${esc(s.title)}" data-showcase data-k="0" data-auto="${s.autoplay || 5}">
+  const fi = PRODUCTS.findIndex((p) => p.id === s.featured);
+  return `<section class="showcase" aria-roledescription="carrusel" aria-label="Productos de ${esc(s.title)}" data-showcase>
     <header class="showcase__head">
       <div>
         <h2 class="showcase__title">${esc(s.title)}</h2>
-        ${s.sub ? `<p class="showcase__sub">${esc(s.sub)}</p>` : ""}
+        <p class="showcase__sub">${n} ${n === 1 ? "producto" : "productos"}${n > 1 ? " · desliza o usa las flechas para ver más" : ""}</p>
       </div>
-      ${multi ? `<button type="button" class="showcase__auto" data-sc-auto aria-pressed="false">${icon("play")}<span>Automático</span></button>` : ""}
+      <div class="showcase__nav">
+        <span class="showcase__count" data-sc-count aria-live="polite"></span>
+        <button type="button" class="showcase__arrow" data-sc-step="-1" aria-label="Productos anteriores">${icon("left")}</button>
+        <button type="button" class="showcase__arrow" data-sc-step="1" aria-label="Productos siguientes">${icon("right")}</button>
+      </div>
     </header>
-    <div class="showcase__stage">
-      <div class="showcase__track" data-sc-track tabindex="0" aria-label="Productos destacados. Usa las flechas para cambiar.">${list.map((i, k) => slide(i, k, n)).join("")}</div>
-      ${multi ? `<button type="button" class="showcase__arrow showcase__arrow--prev" data-sc-step="-1" aria-label="Producto anterior">${icon("left")}</button>
-      <button type="button" class="showcase__arrow showcase__arrow--next" data-sc-step="1" aria-label="Producto siguiente">${icon("right")}</button>` : ""}
-    </div>
-    ${multi ? `<div class="showcase__dots" role="group" aria-label="Elegir producto">${list.map((i, k) =>
-      `<button type="button" class="showcase__dot" data-sc-go="${k}" aria-label="Ver ${esc(PRODUCTS[i].n)}"${k ? "" : ' aria-current="true"'}><i></i></button>`).join("")}</div>` : ""}
+    <div class="showcase__track" data-sc-track tabindex="0" aria-label="Lista de productos. Usa las flechas del teclado para desplazarte.">${list
+      .map((i, k) => item(i, k, n, i === fi, s.badge))
+      .join("")}</div>
+    <div class="showcase__dots" role="group" aria-label="Ir a un producto">${list
+      .map((i, k) => `<button type="button" class="showcase__dot${i === fi ? " showcase__dot--featured" : ""}" data-sc-go="${k}" aria-label="Ver ${esc(PRODUCTS[i].n)}"><i></i></button>`)
+      .join("")}</div>
   </section>`;
 }
 
 /* ---------- Interacción ---------- */
-const slidesOf = (root) => root.querySelectorAll("[data-sc-slide]");
+const itemsOf = (root) => [...root.querySelectorAll("[data-sc-item]")];
 const trackOf = (root) => root.querySelector("[data-sc-track]");
+const smooth = () => (prefersReducedMotion() ? "auto" : "smooth");
 
-function indexFromScroll(root) {
+/** Productos a la vista: índice del primero, del último y estado de las flechas. */
+function sync(root) {
   const t = trackOf(root);
-  return Math.round(t.scrollLeft / Math.max(1, t.clientWidth));
+  if (!t) return;
+  const items = itemsOf(root);
+  const o = items[0].offsetLeft; // relleno izquierdo del carril
+  const l = t.scrollLeft, r = l + t.clientWidth - 2 * o;
+  let first = -1, last = -1;
+  items.forEach((el, k) => {
+    const a = el.offsetLeft - o, w = el.offsetWidth, b = a + w;
+    if (Math.min(b, r) - Math.max(a, l) > w * 0.6) { if (first < 0) first = k; last = k; }
+  });
+  if (first < 0) first = last = Math.min(items.length - 1, Math.floor(nearest(root)));
+  root.dataset.first = first;
+  root.querySelectorAll("[data-sc-go]").forEach((d, k) => {
+    d.classList.toggle("is-in", k >= first && k <= last);
+    k === first ? d.setAttribute("aria-current", "true") : d.removeAttribute("aria-current");
+  });
+  const c = root.querySelector("[data-sc-count]");
+  if (c) c.textContent = first === last ? `${first + 1} de ${items.length}` : `${first + 1}–${last + 1} de ${items.length}`;
+  const max = t.scrollWidth - t.clientWidth - 2;
+  const [prev, next] = root.querySelectorAll("[data-sc-step]");
+  prev.disabled = l <= 2;
+  next.disabled = l >= max;
 }
 
-function mark(root, k) {
-  root.dataset.k = k;
-  root.querySelectorAll("[data-sc-go]").forEach((d, j) => (j === k ? d.setAttribute("aria-current", "true") : d.removeAttribute("aria-current")));
-  slidesOf(root).forEach((s, j) => (j === k ? s.removeAttribute("aria-hidden") : s.setAttribute("aria-hidden", "true")));
-}
-
-function go(root, k, smooth = true) {
-  const n = slidesOf(root).length;
-  if (!n) return;
-  k = ((k % n) + n) % n; // vuelve al primero después del último
+function goTo(root, k) {
   const t = trackOf(root);
-  t.scrollTo({ left: k * t.clientWidth, behavior: smooth && !prefersReducedMotion() ? "smooth" : "auto" });
-  mark(root, k);
+  const items = itemsOf(root);
+  k = Math.max(0, Math.min(items.length - 1, k));
+  t.scrollTo({ left: items[k].offsetLeft - items[0].offsetLeft, behavior: smooth() });
 }
 
-/* Cambio automático: apagado por defecto; solo lo activa el usuario. */
-function setAuto(root, on) {
-  clearInterval(root._timer);
-  const b = root.querySelector("[data-sc-auto]");
-  if (b) {
-    b.setAttribute("aria-pressed", String(on));
-    b.innerHTML = `${icon(on ? "pause" : "play")}<span>Automático</span>`;
-    b.setAttribute("aria-label", on ? "Desactivar cambio automático" : "Activar cambio automático");
-  }
-  if (!on) return;
-  root._timer = setInterval(() => {
-    if (!root.isConnected) return clearInterval(root._timer);
-    if (root._hover || document.hidden) return;
-    go(root, +root.dataset.k + 1);
-  }, (+root.dataset.auto || 5) * 1000);
+/** Pinta el estado inicial de los carruseles que haya en `scope` (después de cada render). */
+export function syncShowcases(scope = document) {
+  scope.querySelectorAll("[data-showcase]").forEach((root) => {
+    const t = trackOf(root);
+    t.scrollLeft = 0;
+    sync(root);
+  });
 }
-const restartAuto = (root) => root.querySelector('[data-sc-auto][aria-pressed="true"]') && setAuto(root, true);
 
 export function initShowcase() {
   document.addEventListener("click", (e) => {
@@ -121,41 +138,29 @@ export function initShowcase() {
     if (root._dragged && performance.now() - root._dragged < 400) { e.preventDefault(); e.stopPropagation(); return; }
     const step = e.target.closest("[data-sc-step]");
     const dot = e.target.closest("[data-sc-go]");
-    const auto = e.target.closest("[data-sc-auto]");
-    if (step) { go(root, +root.dataset.k + +step.dataset.scStep); restartAuto(root); }
-    else if (dot) { go(root, +dot.dataset.scGo); restartAuto(root); }
-    else if (auto) setAuto(root, auto.getAttribute("aria-pressed") !== "true");
+    if (step) goTo(root, +(root.dataset.first || 0) + +step.dataset.scStep);
+    else if (dot) goTo(root, +dot.dataset.scGo);
   }, true);
 
   document.addEventListener("keydown", (e) => {
     if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
-    const root = e.target.closest?.("[data-showcase]");
-    if (!root || e.altKey || e.ctrlKey || e.metaKey) return;
+    const t = e.target.closest?.("[data-sc-track]");
+    if (!t || e.altKey || e.ctrlKey || e.metaKey) return;
     e.preventDefault();
-    go(root, +root.dataset.k + (e.key === "ArrowLeft" ? -1 : 1));
-    restartAuto(root);
+    const root = t.closest("[data-showcase]");
+    goTo(root, +(root.dataset.first || 0) + (e.key === "ArrowLeft" ? -1 : 1));
   });
 
-  // Deslizamiento con el dedo o el trackpad: el índice sigue al scroll (el evento no burbujea: captura).
+  // El evento scroll no burbujea: se escucha en captura.
   document.addEventListener("scroll", (e) => {
     const t = e.target;
     if (!(t instanceof Element) || !t.matches("[data-sc-track]")) return;
     const root = t.closest("[data-showcase]");
-    clearTimeout(root._st);
-    root._st = setTimeout(() => {
-      const k = indexFromScroll(root);
-      if (k !== +root.dataset.k) { mark(root, k); restartAuto(root); }
-    }, 80);
+    if (root._raf) return;
+    root._raf = requestAnimationFrame(() => { root._raf = 0; sync(root); });
   }, true);
 
-  // Pausa el automático mientras el cursor o el dedo están sobre el carrusel.
-  document.addEventListener("pointerover", (e) => { const r = e.target.closest?.("[data-showcase]"); if (r) r._hover = true; });
-  document.addEventListener("pointerout", (e) => {
-    const r = e.target.closest?.("[data-showcase]");
-    if (r && !r.contains(e.relatedTarget)) r._hover = false;
-  });
-
-  // Arrastre con mouse (en táctil el navegador ya desliza solo).
+  // Arrastre con mouse (en táctil y trackpad el navegador ya desliza solo).
   let drag = null;
   document.addEventListener("pointerdown", (e) => {
     if (e.pointerType !== "mouse" || e.button !== 0) return;
@@ -175,23 +180,33 @@ export function initShowcase() {
     const { t, root, moved, x } = drag;
     drag = null;
     if (!moved) return;
-    t.classList.remove("is-dragging");
     root._dragged = performance.now();
     const dx = (e.clientX ?? x) - x;
-    const k = +root.dataset.k;
-    // Un arrastre de más de 12 % del ancho pasa al siguiente o al anterior.
-    const target = Math.abs(dx) > t.clientWidth * 0.12 ? k + (dx < 0 ? 1 : -1) : k;
-    const n = slidesOf(root).length;
-    go(root, Math.max(0, Math.min(n - 1, target)));
-    restartAuto(root);
+    // Al soltar se acomoda en el producto siguiente o anterior según la dirección del arrastre
+    // (la posición se mide antes de reactivar el imán, que la movería).
+    const at = nearest(root);
+    const k = Math.abs(dx) > 40 ? (dx < 0 ? Math.ceil(at) : Math.floor(at)) : Math.round(at);
+    t.classList.remove("is-dragging");
+    goTo(root, k);
   };
   document.addEventListener("pointerup", end);
   document.addEventListener("pointercancel", end);
 
-  // Al cambiar el ancho de la ventana se mantiene el producto visible.
   let rt = 0;
   window.addEventListener("resize", () => {
     clearTimeout(rt);
-    rt = setTimeout(() => document.querySelectorAll("[data-showcase]").forEach((r) => go(r, +r.dataset.k, false)), 120);
+    rt = setTimeout(() => document.querySelectorAll("[data-showcase]").forEach(sync), 120);
   });
+}
+
+/** Posición fraccionaria del primer producto visible (para acomodar después de arrastrar). */
+function nearest(root) {
+  const t = trackOf(root);
+  const items = itemsOf(root);
+  const l = t.scrollLeft + items[0].offsetLeft + 1;
+  for (let k = 0; k < items.length; k++) {
+    const a = items[k].offsetLeft, w = items[k].offsetWidth;
+    if (l < a + w) return k + Math.max(0, (l - a) / w);
+  }
+  return items.length - 1;
 }
