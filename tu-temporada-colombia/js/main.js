@@ -12,6 +12,7 @@ import { prefersReducedMotion } from "./core/env.js";
 import { initTheme } from "./core/theme.js";
 import { initCards } from "./shop/cards.js";
 import { attachPromo, detachPromo } from "./shop/promo.js";
+import { initPopup } from "./shop/popup.js";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -359,3 +360,4 @@ function renderDetail(i) {
 /* ---------- Arranque ---------- */
 window.addEventListener("hashchange", () => route());
 route();
+initPopup();

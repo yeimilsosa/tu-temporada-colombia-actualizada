@@ -236,6 +236,15 @@ estilos al final de `css/shop.css`).
 y pegar en `js/data/banners.js` la línea que imprime el script. Para quitarlo, borrar su línea.
 Admite versión vertical para celulares (campo `mobile`; ver el comentario en `js/data/banners.js`).
 
+## Ventana promocional (pop-up)
+
+`js/shop/popup.js`, textos y producto en `js/data/popup.js`, imagen en `assets/img/promo/` (original en
+`popup-fuente/`). Aparece 5 s después de entrar, una vez por sesión: al cerrarla (X, clic afuera, Escape)
+o al tocar WhatsApp no vuelve hasta que se abra el sitio en otra sesión. Si el visitante está escribiendo
+en la búsqueda o tiene un menú abierto, espera. El botón abre WhatsApp con un mensaje que nombra el
+producto. Para promocionar otro producto, cambia `product`, `image` e `id` en `js/data/popup.js`; para
+apagarla, `enabled: false`. `?nopopup` en la URL la desactiva para pruebas.
+
 ## Tarjetas del catálogo: fotos y guardados
 
 - **Fotos:** si un producto tiene más de una foto, la tarjeta muestra flechas finas al pasar el cursor y

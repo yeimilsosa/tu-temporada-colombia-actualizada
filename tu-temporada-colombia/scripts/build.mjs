@@ -32,6 +32,8 @@ const products = (await readdir(join(root, "assets/img/products"), { recursive: 
   .filter((f) => f.endsWith(".webp") && !f.endsWith("-sm.webp") && !f.startsWith("pendientes"));
 for (const f of products) inline[`assets/img/products/${f}`] = await dataURI(`assets/img/products/${f}`);
 for (const f of await readdir(join(root, "assets/textures"))) inline[`assets/textures/${f}`] = await dataURI(`assets/textures/${f}`);
+// Imagen de la ventana promocional (1280 px).
+for (const f of await readdir(join(root, "assets/img/promo"))) if (f.endsWith("-1280.webp")) inline[`assets/img/promo/${f}`] = await dataURI(`assets/img/promo/${f}`);
 // Banners del carrusel: solo la versión de 1280 px (el archivo único no usa srcset).
 for (const f of await readdir(join(root, "assets/img/banners"))) if (f.endsWith("-1280.webp")) inline[`assets/img/banners/${f}`] = await dataURI(`assets/img/banners/${f}`);
 for (const f of await readdir(join(root, "assets/img/fallback"))) inline[`assets/img/fallback/${f}`] = await dataURI(`assets/img/fallback/${f}`);
