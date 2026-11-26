@@ -3,7 +3,7 @@
  * Extraído sin cambios de contenido del HTML original (backup/original/).
  * Campos: n=nombre, c=categoría, p=precio COP (null = consultar), o=precio anterior (opcional),
  * f=características ("## " inicia subtítulo), img=imágenes, s=imágenes adicionales,
- * v=variantes {n,id,img}, vl=etiqueta de variantes, id=referencia, nd=marca heredada del original.
+ * v=variantes {n,id,img}, vl=etiqueta de variantes, pr=presentación (opcional, p. ej. "Botella de 500 ml"), id=referencia, nd=marca heredada del original.
  * Las rutas de imagen apuntan a la versión grande; la versión de tarjeta termina en "-sm.webp".
  */
 export const WHATSAPP = "573165298792";
@@ -753,6 +753,39 @@ export const PRODUCTS = [
    "assets/img/products/engorilate-xx-tradicional.webp"
   ],
   "id": "ENGORILATE-XX-TRADICIONAL"
+ },
+
+ {
+  "n": "ENGORILATE XX Tradicional 500 ml",
+  "c": "SALUD",
+  "p": 59900,
+  "pr": "Botella de 500 ml",
+  "f": [
+   "Presentación: botella de 500 ml (17 porciones)",
+   "Concentrado a base de frutas, buena fuente de vitaminas y minerales",
+   "Ingredientes indicados en el empaque: chontaduro, borojó, noni y guaraná",
+   "Contiene edulcorantes"
+  ],
+  "img": [
+   "assets/img/products/engorilate-xx-tradicional-500ml.webp"
+  ],
+  "id": "ENGORILATE-XX-TRADICIONAL-500ML"
+ },
+
+ {
+  "n": "ENGORILATE XX Premium 500 ml",
+  "c": "SALUD",
+  "p": 69900,
+  "pr": "Botella de 500 ml",
+  "f": [
+   "Presentación: botella de 500 ml (17 porciones)",
+   "Versión Premium de ENGORILATE XX",
+   "Contiene edulcorantes"
+  ],
+  "img": [
+   "assets/img/products/engorilate-xx-premium-500ml.webp"
+  ],
+  "id": "ENGORILATE-XX-PREMIUM-500ML"
  }
 
 ];

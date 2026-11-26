@@ -11,6 +11,7 @@ import { observe, enterView, swap } from "./shop/motion.js";
 import { prefersReducedMotion } from "./core/env.js";
 import { initTheme } from "./core/theme.js";
 import { initCards } from "./shop/cards.js";
+import { initShowcase } from "./shop/showcase.js";
 import { attachPromo, detachPromo } from "./shop/promo.js";
 import { initPopup } from "./shop/popup.js";
 
@@ -29,6 +30,7 @@ let view = null;
 /* ---------- Cabecera ---------- */
 initTheme();
 initCards();
+initShowcase();
 const WA_GENERAL = waLink("Hola, quiero información de Tu Temporada Colombia.");
 $$("[data-wa]").forEach((a) => (a.href = WA_GENERAL));
 $("[data-year]").textContent = new Date().getFullYear();

@@ -2,6 +2,7 @@
 import { PRODUCTS, CATEGORIES, all, esc, label, activeCategories, small, query, features, waLink, formatCOP } from "./catalog.js";
 import { state, isSaved } from "./store.js";
 import { grid, icon, price } from "./ui.js";
+import { showcase, showcaseIndexes } from "./showcase.js";
 
 export const SORTS = [
   ["", "Relevancia"],
@@ -71,7 +72,11 @@ export function results(f) {
       count: 0,
       html: `<div class="empty"><h2>No hay productos con estos filtros</h2><p>Prueba con otra palabra, cambia el rango de precio o revisa todas las categorías.</p><button type="button" class="btn btn--ghost" data-clear="all">Ver todos los productos</button></div>`,
     };
-  return { count: r.length, html: grid(r) };
+  // Carrusel destacado de la categoría (js/data/showcases.js): sus productos salen de la cuadrícula
+  // para no mostrarse dos veces. El conteo sigue incluyéndolos.
+  const featured = f.cat ? showcaseIndexes(f.cat).filter((i) => r.some(([, j]) => j === i)) : [];
+  const rest = r.filter(([, j]) => !featured.includes(j));
+  return { count: r.length, html: showcase(f.cat, featured) + (rest.length ? grid(rest) : "") };
 }
 
 /* ---------- Guardados ---------- */
@@ -120,6 +125,7 @@ export function detail(i, d) {
         <nav class="crumbs" aria-label="Ruta"><a href="#catalogo">Tienda</a><span aria-hidden="true">/</span><a href="#cat-${catIndex}">${esc(label(p.c))}</a></nav>
         <h1>${esc(p.n)}</h1>
         ${ref ? `<p class="pdp__ref">Ref. <span data-ref>${esc(ref)}</span></p>` : ""}
+        ${p.pr ? `<p class="pdp__pres">${esc(p.pr)}</p>` : ""}
         ${price(p, "pdp__price")}
         ${variants}
         <div class="pdp__block">
