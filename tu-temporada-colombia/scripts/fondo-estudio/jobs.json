@@ -1,0 +1,260 @@
+[
+ {
+  "key": "kit-maleta-naruto",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-naruto-facb734504.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Naruto"
+ },
+ {
+  "key": "kit-maleta-cars-azul",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-cars-azul-4de5ab710e.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Cars Azul"
+ },
+ {
+  "key": "kit-maleta-cars-negro",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-cars-negro-ee86d645d4.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Cars Negro"
+ },
+ {
+  "key": "kit-maleta-batman",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-batman-52570e4093.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Batman"
+ },
+ {
+  "key": "kit-maleta-sonic",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-sonic-aa097fbb4f.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Sonic"
+ },
+ {
+  "key": "kit-maleta-buzz-lightyear",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-buzz-lightyear-f30adda146.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Buzz Lightyear"
+ },
+ {
+  "key": "kit-maleta-unicornio-arcoiris",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-unicornio-arcoiris-e1da917b54.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Unicornio/arcoiris"
+ },
+ {
+  "key": "kit-maleta-frozen",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-frozen-4306ccd9d7.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Frozen"
+ },
+ {
+  "key": "kit-maleta-sofia",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-sofia-95650c6aa6.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Sofia"
+ },
+ {
+  "key": "kit-maleta-paw-patrol",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-paw-patrol-c6845666ac.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Paw Patrol"
+ },
+ {
+  "key": "kit-maleta-encanto-rosada",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-encanto-rosada-023e9fa599.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Encanto Rosada"
+ },
+ {
+  "key": "kit-maleta-encanto-azul",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-encanto-azul-47325b6ff9.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Encanto Azul"
+ },
+ {
+  "key": "kit-maleta-frozen-rosada",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-frozen-rosada-6ad428d81d.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Frozen Rosada"
+ },
+ {
+  "key": "kit-maleta-frozen-morada",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-frozen-morada-b35d28aed0.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Frozen Morada"
+ },
+ {
+  "key": "kit-maleta-unicornio",
+  "src": "assets/img/products/kit-maleta-lonchera-y-cartuchera-unicornio-a9cb790bb6.webp",
+  "crop": null,
+  "prod": "Kit Maleta, Lonchera y Cartuchera",
+  "variant": "Unicornio"
+ },
+ {
+  "key": "pistola-burbuja",
+  "src": "assets/img/products/pistola-burbuja-132-huecos-84628e481f.webp",
+  "crop": null,
+  "prod": "Pistola Burbuja 132 Huecos",
+  "variant": null
+ },
+ {
+  "key": "pistola-burbuja-verde",
+  "src": "assets/img/products/pistola-burbuja-132-huecos-verde-abd3ab03cc.webp",
+  "crop": null,
+  "prod": "Pistola Burbuja 132 Huecos",
+  "variant": "Verde"
+ },
+ {
+  "key": "pistola-burbuja-azul",
+  "src": "assets/img/products/pistola-burbuja-132-huecos-azul-d244696ee6.webp",
+  "crop": null,
+  "prod": "Pistola Burbuja 132 Huecos",
+  "variant": "Azul"
+ },
+ {
+  "key": "pistola-burbuja-rosada",
+  "src": "assets/img/products/pistola-burbuja-132-huecos-rosada-0c1ec45877.webp",
+  "crop": null,
+  "prod": "Pistola Burbuja 132 Huecos",
+  "variant": "Rosada"
+ },
+ {
+  "key": "licuadora",
+  "src": "assets/img/products/licuadora-portatil-digital-inalambrica-9e9d266535.webp",
+  "crop": null,
+  "prod": "Licuadora Portátil Digital Inalámbrica",
+  "variant": null
+ },
+ {
+  "key": "encendedor",
+  "src": "assets/img/products/encendedor-electronico-5fffd4a57c.webp",
+  "crop": [
+   0.36,
+   0,
+   1,
+   1
+  ],
+  "prod": "Encendedor Electrónico",
+  "variant": null
+ },
+ {
+  "key": "pistola-agua",
+  "src": "assets/img/products/pistola-electrica-de-chorro-aac102e0e6.webp",
+  "crop": null,
+  "prod": "Pistola Eléctrica de Chorro",
+  "variant": null
+ },
+ {
+  "key": "aceite",
+  "src": "assets/img/products/aceite-de-magnesio-789629c073.webp",
+  "crop": null,
+  "prod": "Aceite de Magnesio",
+  "variant": null
+ },
+ {
+  "key": "organizador",
+  "src": "assets/img/products/organizador-de-baul-para-carro-plegable-0adaa03793.webp",
+  "crop": [
+   0,
+   0.27,
+   0.81,
+   0.74
+  ],
+  "prod": "Organizador de Baúl para Carro Plegable",
+  "variant": null
+ },
+ {
+  "key": "gomitas",
+  "src": "assets/img/products/vinagre-de-manzana-en-gomitas-13b0f9b0e7.webp",
+  "crop": null,
+  "prod": "Vinagre de Manzana en Gomitas",
+  "variant": null
+ },
+ {
+  "key": "cargador",
+  "src": "assets/img/products/cargador-inalambrico-3-en-1-ac0a415529.webp",
+  "crop": [
+   0.42,
+   0.42,
+   1,
+   1
+  ],
+  "prod": "Cargador Inalámbrico 3 en 1",
+  "variant": null
+ },
+ {
+  "key": "ventilador",
+  "src": "assets/img/products/ventilador-portatil-de-cuello-32d0e1e87f.webp",
+  "crop": [
+   0.25,
+   0,
+   1,
+   0.6
+  ],
+  "prod": "Ventilador Portátil de Cuello",
+  "variant": null
+ },
+ {
+  "key": "scooter-rojo",
+  "src": "assets/img/products/scooter-electrica-con-luces-led-kidshop-pt10-rojo-06932811b0.webp",
+  "crop": null,
+  "prod": "Scooter Eléctrica con Luces LED Kidshop PT10",
+  "variant": "Rojo"
+ },
+ {
+  "key": "scooter-azul",
+  "src": "assets/img/products/scooter-electrica-con-luces-led-kidshop-pt10-azul-cf175c64f5.webp",
+  "crop": null,
+  "prod": "Scooter Eléctrica con Luces LED Kidshop PT10",
+  "variant": "Azul"
+ },
+ {
+  "key": "carro-rojo",
+  "src": "assets/img/products/carro-antigravedad-con-control-remoto-rojo-05f93065f3.webp",
+  "crop": null,
+  "prod": "Carro Antigravedad con Control Remoto",
+  "variant": "Rojo"
+ },
+ {
+  "key": "carro-azul",
+  "src": "assets/img/products/carro-antigravedad-con-control-remoto-azul-cd2c4cb72e.webp",
+  "crop": null,
+  "prod": "Carro Antigravedad con Control Remoto",
+  "variant": "Azul"
+ },
+ {
+  "key": "dron",
+  "src": "assets/img/products/dron-doble-camara-4k-con-maletin-156dc4d632.webp",
+  "crop": null,
+  "prod": "Dron Doble Cámara 4K con Maletín",
+  "variant": null
+ },
+ {
+  "key": "aspiradora",
+  "src": "assets/img/products/mini-aspiradora-robot-b0e1570446.webp",
+  "crop": null,
+  "prod": "Mini Aspiradora Robot",
+  "variant": null
+ },
+ {
+  "key": "set-arte-azul",
+  "src": "assets/img/products/set-de-arte-208-piezas-azul-83b805776f.webp",
+  "crop": null,
+  "prod": "Set de Arte 208 Piezas",
+  "variant": "Azul"
+ }
+]

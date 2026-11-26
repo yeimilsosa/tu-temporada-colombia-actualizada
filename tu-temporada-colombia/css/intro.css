@@ -1,0 +1,394 @@
+/* Tokens de la intro por tema: noche cinematográfica / día luminoso */
+:root {
+  --j-bg: #f7f7f5;
+  --j-shade: #f7f7f5;
+  --j-text: #111111;
+  --j-text-2: #41454b;
+  --j-muted: #6b6f75;
+  --j-line: rgba(17, 17, 17, 0.2);
+  --j-line-soft: rgba(17, 17, 17, 0.08);
+  --j-hover: rgba(17, 17, 17, 0.04);
+  --j-glow: rgba(247, 247, 245, 0.85);
+  --j-pin: #111111;
+  --j-pin-ring: rgba(17, 17, 17, 0.55);
+  --j-pin-glow: 0 0 0 3px rgba(247, 247, 245, 0.8), 0 0 16px 4px rgba(247, 247, 245, 0.9);
+  --j-veil: rgba(247, 247, 245, 0.88);
+}
+:root[data-theme="dark"] {
+  --j-bg: #08090b;
+  --j-shade: #08090b;
+  --j-text: #ffffff;
+  --j-text-2: #d5d7da;
+  --j-muted: #8e9298;
+  --j-line: rgba(213, 215, 218, 0.28);
+  --j-line-soft: rgba(213, 215, 218, 0.1);
+  --j-hover: rgba(255, 255, 255, 0.04);
+  --j-glow: rgba(8, 9, 11, 0.75);
+  --j-pin: #ffffff;
+  --j-pin-ring: rgba(213, 215, 218, 0.75);
+  --j-pin-glow: 0 0 0 3px rgba(8, 9, 11, 0.55), 0 0 18px 4px rgba(255, 255, 255, 0.55);
+  --j-veil: rgba(8, 9, 11, 0.55);
+}
+
+/* ==========================================================================
+   Intro cinematográfica: Tierra nocturna → Sudamérica → Colombia → tienda
+   ========================================================================== */
+
+.journey {
+  position: relative;
+  height: var(--journey-h, 800vh);
+  background: var(--j-bg);
+  color: var(--j-text);
+}
+.journey[hidden] { display: none; }
+
+.journey__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--j-bg);
+}
+
+.journey__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity 1.6s var(--ease-out);
+}
+.journey.is-ready .journey__canvas { opacity: 1; }
+
+/* Fallback sin WebGL: dos encuadres pre-renderizados */
+.journey__fallback { position: absolute; inset: 0; display: none; }
+.journey.no-webgl .journey__fallback { display: block; }
+.journey.no-webgl .journey__canvas { display: none; }
+.journey__fallback img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+.journey__fallback .fb-near { opacity: var(--fb-near, 0); }
+.journey__fallback [data-for-theme] { display: none; }
+:root[data-theme="dark"] .journey__fallback [data-for-theme="dark"],
+:root[data-theme="light"] .journey__fallback [data-for-theme="light"] { display: block; }
+.journey__fallback .fb-far { transform: scale(var(--fb-scale, 1)); transform-origin: 50% 50%; }
+
+/* Velo de lectura: aclara (o oscurece) arriba y abajo mientras se lee el texto de llegada */
+.journey__veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--j-veil) 0%, transparent 34%, transparent 66%, var(--j-veil) 100%);
+  opacity: var(--arr-a, 0);
+}
+.journey__shade {
+  position: absolute;
+  inset: 0;
+  background: var(--j-shade);
+  opacity: var(--shade, 0);
+  pointer-events: none;
+}
+
+/* ---------- Barra superior ---------- */
+.journey__top {
+  position: absolute;
+  z-index: 6;
+  top: max(22px, env(safe-area-inset-top));
+  left: var(--gutter);
+  right: var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  opacity: var(--chrome, 1);
+}
+.journey__brand { display: inline-flex; align-items: center; gap: 24px; color: var(--j-text); }
+.journey__brand .logo { color: var(--j-text); }
+.journey__brand .logo svg { height: 24px; }
+.journey__readout {
+  font-size: var(--fs-sm);
+  color: var(--j-muted);
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  gap: 18px;
+}
+.journey__readout b { font-weight: 500; color: var(--j-text-2); }
+.journey__actions { display: flex; align-items: center; gap: 8px; }
+.journey__theme {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--j-line);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--j-text-2);
+  transition: border-color 0.3s, color 0.3s, background-color 0.3s;
+}
+.journey__theme:hover { border-color: var(--j-text-2); color: var(--j-text); background: var(--j-hover); }
+.journey__theme .icon { width: 18px; height: 18px; }
+.journey__skip {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 18px;
+  border: 1px solid var(--j-line);
+  border-radius: 999px;
+  font-size: var(--fs-sm);
+  color: var(--j-text-2);
+  transition: border-color 0.3s, color 0.3s, background-color 0.3s;
+}
+.journey__skip:hover { border-color: var(--j-text-2); color: var(--j-text); background: var(--j-hover); }
+.journey__skip .icon { width: 16px; height: 16px; }
+
+/* ---------- Escena 1: título ---------- */
+.journey__intro {
+  position: absolute;
+  z-index: 4;
+  left: var(--gutter);
+  bottom: clamp(56px, 11vh, 120px);
+  opacity: var(--intro-a, 1);
+  transform: translateY(var(--intro-y, 0px));
+  pointer-events: none;
+}
+.lockup {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--display);
+  font-size: clamp(3.1rem, 0.9rem + 7.4vw, 9.25rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  margin-left: -0.05em;
+}
+/* Mismo par del logotipo: Newsreader para el nombre, Instrument Sans para el país */
+.lockup__a { font-family: var(--brand); font-weight: 450; letter-spacing: -0.035em; }
+.lockup__b { font-weight: 400; color: var(--j-text-2); }
+.intro-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+.intro-line > span { display: inline-block; }
+
+.journey__cue {
+  position: absolute;
+  z-index: 4;
+  right: var(--gutter);
+  bottom: clamp(56px, 11vh, 120px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: var(--fs-sm);
+  color: var(--j-muted);
+  opacity: var(--intro-a, 1);
+}
+.journey__cue-line {
+  width: 1px;
+  height: 44px;
+  background: var(--j-line);
+  position: relative;
+  overflow: hidden;
+}
+.journey__cue-line::after {
+  content: "";
+  position: absolute;
+  left: 0; top: -50%;
+  width: 1px;
+  height: 50%;
+  background: var(--j-text-2);
+  animation: cue 2.4s var(--ease-io) infinite;
+}
+@keyframes cue {
+  0% { transform: translateY(0); }
+  70%, 100% { transform: translateY(300%); }
+}
+
+/* ---------- Escena 3: pin ---------- */
+.journey__pin {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform: translate3d(var(--pin-x, -100px), var(--pin-y, -100px), 0);
+  opacity: var(--pin-a, 0);
+  pointer-events: none;
+}
+.pin__dot,
+.pin__ring,
+.pin__halo {
+  position: absolute;
+  left: 0; top: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(var(--pin-s, 1));
+}
+.pin__dot {
+  width: 9px;
+  height: 9px;
+  background: var(--j-pin);
+  box-shadow: var(--j-pin-glow);
+}
+.pin__ring {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--j-pin-ring);
+}
+.pin__halo {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--j-pin-ring);
+  animation: halo 2.6s var(--ease-out) infinite;
+}
+@keyframes halo {
+  0% { transform: translate(-50%, -50%) scale(0.6); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(3.2); opacity: 0; }
+}
+.pin__stem {
+  position: absolute;
+  left: 0;
+  bottom: 20px;
+  width: 1px;
+  height: var(--stem, 0px);
+  background: linear-gradient(to top, var(--j-pin-ring), transparent);
+  transform: translateX(-0.5px);
+}
+.pin__label {
+  position: absolute;
+  left: 22px;
+  top: -9px;
+  font-size: var(--fs-sm);
+  color: var(--j-text-2);
+  white-space: nowrap;
+  opacity: var(--pin-label, 0);
+}
+
+/* ---------- Texto de llegada ---------- */
+.journey__arrival {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: clamp(84px, 13vh, 150px);
+  width: min(92vw, 1100px);
+  text-align: center;
+  transform: translate(-50%, var(--arr-y, 24px));
+  opacity: var(--arr-a, 0);
+  pointer-events: none;
+}
+.arrival__kicker {
+  font-size: var(--fs-md);
+  color: var(--j-text-2);
+  text-shadow: 0 1px 20px var(--j-glow);
+}
+.arrival__title {
+  margin-top: 10px;
+  font-family: var(--display);
+  font-size: clamp(2.3rem, 0.8rem + 4.6vw, 5.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-shadow: 0 2px 40px var(--j-glow);
+}
+.journey__tagline {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: clamp(56px, 11vh, 120px);
+  transform: translate(-50%, var(--arr-y, 24px));
+  opacity: var(--arr-a, 0);
+  text-align: center;
+  pointer-events: none;
+  width: min(92vw, 640px);
+}
+.journey__tagline p {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.25rem, 0.9rem + 1.1vw, 1.875rem);
+  line-height: 1.2;
+  color: var(--j-text);
+  text-shadow: 0 2px 30px var(--j-glow);
+}
+.journey__tagline small {
+  display: block;
+  margin-top: 14px;
+  font-size: var(--fs-sm);
+  color: var(--j-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Progreso ---------- */
+.journey__progress {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: var(--j-line-soft);
+  opacity: var(--chrome, 1);
+}
+.journey__progress span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--j-text-2);
+  transform-origin: left;
+  transform: scaleX(var(--progress, 0));
+}
+
+/* ---------- Escena 4: placa que revela la tienda ---------- */
+.journey__plate {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  background: var(--paper);
+  color: var(--text);
+  clip-path: circle(var(--plate-r, 0px) at var(--plate-x, 50%) var(--plate-y, 50%));
+  -webkit-clip-path: circle(var(--plate-r, 0px) at var(--plate-x, 50%) var(--plate-y, 50%));
+  visibility: var(--plate-vis, hidden);
+}
+.plate {
+  height: 100%;
+  padding-top: calc(var(--header-h) + clamp(24px, 4vh, 40px));
+}
+.plate [data-plate-in] {
+  opacity: var(--plate-in, 0);
+  transform: translateY(calc((1 - var(--plate-in, 0)) * 16px));
+}
+
+/* Movimiento reducido: el recorrido se acorta y sin vuelo de cámara */
+.journey.is-reduced { --journey-h: 300vh; }
+
+@media (max-width: 760px) {
+  .journey { --journey-h: 700vh; }
+  .journey.is-reduced { --journey-h: 280vh; }
+  .journey__readout { display: none; }
+  .journey__brand { display: none; }
+  .journey__top { justify-content: flex-end; }
+  .journey__intro { bottom: clamp(96px, 16vh, 150px); right: var(--gutter); }
+  .journey__cue { left: var(--gutter); right: auto; bottom: 36px; }
+  .journey__cue-line { height: 28px; }
+  .arrival__title { font-size: clamp(2.1rem, 10.5vw, 3.2rem); }
+  .arrival__title .lockup__b { display: block; }
+  .lockup { font-size: clamp(2.6rem, 13.2vw, 5.4rem); }
+  .lockup--logo svg { height: auto; width: min(76vw, 320px); }
+}
+
+@media (max-height: 640px) and (min-width: 761px) {
+}
+.journey.is-reduced .journey__plate { opacity: var(--plate-opacity, 0); }
+.lockup span { white-space: nowrap; }
+/* Logotipo apilado como nombre de la intro (mismo dibujo que la marca, en grande) */
+.lockup--logo { color: var(--j-text); margin-left: 0; }
+.lockup--logo svg { display: block; height: clamp(190px, 33vh, 330px); width: auto; max-width: 62vw; }
+.arrival__title--logo { display: flex; justify-content: center; color: var(--j-text); filter: drop-shadow(0 2px 24px var(--j-glow)); }
+.arrival__title--logo svg { display: block; height: clamp(54px, 7.4vw, 104px); width: auto; max-width: 88vw; }

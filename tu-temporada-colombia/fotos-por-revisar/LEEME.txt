@@ -1,0 +1,6 @@
+Imágenes del paquete nuevo que NO se publican. No las carga la tienda.
+
+- no-coinciden-con-el-producto/: recreaciones que cambian el diseño, el modelo o el envase.
+- formato-no-utilizable/: el producto coincide, pero la foto es una franja o una foto 3:2 que no se puede llevar a un cuadrado sin retocar el producto.
+
+El motivo de cada una está en docs/revision-fotos.md.
