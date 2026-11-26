@@ -71,8 +71,8 @@ algo de aire alrededor.
 
 | Imagen | Producto | Estado |
 |---|---|---|
-| `05/luces_cortina_led.png` | Luces Cortina LED Inteligente 3x3 | Preparada, sin publicar. El producto no tiene foto original, así que no puedo confirmar el modelo. |
-| `05/closet_tela.png` | Closet de Tela Ref. 2 | Igual: preparada, sin publicar. |
+| `05/luces_cortina_led.png` | Luces Cortina LED Inteligente 3x3 | Descartada: el producto se retiró de la tienda (nov. 2026). |
+| `05/closet_tela.png` | Closet de Tela Ref. 2 | Descartada: el producto se retiró de la tienda (nov. 2026). |
 
 Si confirmas que corresponden al artículo real, se publican moviendo su línea de `PENDING` a `STUDIO` en
 `js/data/photos.js`.

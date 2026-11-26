@@ -96,8 +96,6 @@ export const STUDIO = {
  * Archivos: assets/img/products/pendientes/
  */
 export const PENDING = {
-  "Luces Cortina LED Inteligente 3x3": "luces-cortina-led-3x3",
-  "Closet de Tela Ref. 2": "closet-de-tela-ref-2",
   // Kit Maleta «Princesas»: el catálogo no tiene esa variante. Archivo: kit-maleta-lonchera-y-cartuchera-princesas
 };
 

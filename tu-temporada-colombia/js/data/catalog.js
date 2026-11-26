@@ -66,18 +66,6 @@ export const PRODUCTS = [
   "id": "2113507"
  },
  {
-  "n": "Luces Cortina LED Inteligente 3x3",
-  "c": "NAVIDAD",
-  "p": 220000,
-  "f": [
-   "LED inteligente",
-   "Medida 3 x 3",
-   "Decoración navideña"
-  ],
-  "img": [],
-  "id": "2334686"
- },
- {
   "n": "Maleta Antirrobo Semipermeable Cuerina Alta Calidad",
   "c": "BOLSOS, MORRALES, MALETAS",
   "p": 45000,
@@ -163,17 +151,6 @@ export const PRODUCTS = [
    "assets/img/products/intercomunicador-para-moto-f14d91cf6d.webp"
   ],
   "id": "2004205"
- },
- {
-  "n": "Closet de Tela Ref. 2",
-  "c": "HOGAR",
-  "p": null,
-  "f": [
-   "Closet de tela",
-   "Referencia 2"
-  ],
-  "img": [],
-  "id": "158243 / 402640"
  },
  {
   "n": "Kit Maleta, Lonchera y Cartuchera",

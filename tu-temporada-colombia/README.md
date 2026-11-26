@@ -51,7 +51,7 @@ js/core/env.js             Rutas de recursos, detección de WebGL/calidad, utili
 js/intro/journey.js        Línea de tiempo por scroll (ScrollTrigger + suavizado) → cámara y CSS
 js/intro/earth.js          Escena three.js: Tierra, nubes, atmósfera, estrellas, fronteras
 js/intro/shaders.js        Shaders GLSL (Tierra, nubes, atmósfera, estrellas)
-js/data/catalog.js         Catálogo (24 productos) y categorías — los datos del negocio
+js/data/catalog.js         Catálogo de productos y categorías — los datos del negocio
 js/data/photos.js          Portadas de estudio (fondo beige) que se anteponen a las fotos originales
 js/data/geo/borders.js     Fronteras de Colombia y región (Natural Earth)
 js/shop/catalog.js         Búsqueda, filtros, orden, imágenes, SEO
@@ -97,10 +97,9 @@ producto basta con borrar su línea.
 ### Fotos originales sobre el mismo fondo
 
 Los productos sin imagen nueva aprovechable usan su **foto real** recortada y compuesta sobre el mismo
-beige, con una sombra de contacto suave (`scripts/fondo-estudio/`). Así 22 de los 24 productos tienen
+beige, con una sombra de contacto suave (`scripts/fondo-estudio/`). Así todos los productos del catálogo original tienen
 portada beige, junto con todas las variantes: los 15 diseños del kit de maleta, los 3 colores de la
-pistola de burbujas, los 2 de la scooter, los 2 del carro y el set de arte azul. El closet y las luces
-no tienen ninguna foto. El producto no se genera ni se retoca: solo se quitan el fondo, las cajas de
+pistola de burbujas, los 2 de la scooter, los 2 del carro y el set de arte azul. El producto no se genera ni se retoca: solo se quitan el fondo, las cajas de
 otras marcas, las letras de los avisos y los recuadros de detalle.
 
 Revisión completa (qué se usó, qué no y por qué): `docs/revision-fotos.md`.

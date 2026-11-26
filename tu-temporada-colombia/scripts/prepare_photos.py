@@ -29,8 +29,6 @@ ACCEPTED = {
     '04_Set_hombre_4_colores_fondo_beige/miel.png': 'set-reloj-correa-billetera-miel',
 }
 PENDING = {
-    '05_Otros_productos_preparados/luces_cortina_led.png': 'luces-cortina-led-3x3',
-    '05_Otros_productos_preparados/closet_tela.png': 'closet-de-tela-ref-2',
 }
 
 def inner_band(im):
