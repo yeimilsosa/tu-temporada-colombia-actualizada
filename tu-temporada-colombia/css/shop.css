@@ -569,3 +569,174 @@ body:not(.is-market) .app { padding-top: var(--header-h); }
 .stage__slide img.is-studio,
 .mosaic img.is-studio,
 .thumbs img.is-studio { padding: 0; object-fit: contain; }
+
+/* ---------- Banners publicitarios (carrusel de la portada) ----------
+   Va dentro del marketplace, debajo del header fijo y antes de la bienvenida. El cuadro tiene
+   una proporción fija (la media de los banners, ver js/shop/promo.js): la página no salta al
+   cargar y las imágenes llenan el cuadro con object-fit: cover sin deformarse. Las flechas van
+   sobre el banner en pantallas grandes y en la fila de controles en celulares, para no tapar
+   el diseño. Los puntos van debajo del banner por la misma razón. */
+.promo {
+  --promo-radius: clamp(10px, 1.1vw, 16px);
+  position: relative;
+  margin-bottom: clamp(22px, 3.2vh, 36px);
+}
+.promo__stage { position: relative; }
+.promo__viewport {
+  position: relative;
+  aspect-ratio: var(--promo-ratio, 2.43);
+  overflow: hidden;
+  border-radius: var(--promo-radius);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+  isolation: isolate;
+}
+.promo__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.9s var(--ease-io), visibility 0s linear 0.9s;
+}
+.promo__slide.is-on {
+  z-index: 1;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.9s var(--ease-io), visibility 0s;
+}
+.promo__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.015);
+  transition: transform 6s var(--ease-out);
+  -webkit-user-drag: none;
+}
+.promo__slide.is-on img { transform: none; }
+.promo__link { display: block; width: 100%; height: 100%; -webkit-tap-highlight-color: transparent; }
+.promo__link:focus-visible { outline: none; }
+.promo__slide:has(.promo__link:focus-visible) { box-shadow: inset 0 0 0 3px var(--text); }
+/* Primer banner: aparece con un fundido cuando su imagen ya está lista */
+.promo:not(.is-ready) .promo__slide.is-on { opacity: 0; }
+
+/* Flechas sobre el banner (pantallas grandes) */
+.promo__arrow,
+.promo__btn {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.3s var(--ease-out), background-color 0.25s, border-color 0.25s, transform 0.3s var(--ease-out);
+}
+.promo__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  color: #111;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  box-shadow: 0 6px 20px rgba(17, 17, 17, 0.14);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.promo__arrow:hover { background: #fff; }
+.promo__arrow:active { transform: scale(0.94); }
+.promo__arrow .icon { width: 20px; height: 20px; stroke-width: 1.7; }
+.promo__arrow--prev { left: clamp(10px, 1.4vw, 20px); }
+.promo__arrow--next { right: clamp(10px, 1.4vw, 20px); }
+@media (hover: hover) and (pointer: fine) {
+  .promo__arrow { opacity: 0; }
+  .promo__arrow--prev { transform: translateX(-6px); }
+  .promo__arrow--next { transform: translateX(6px); }
+  .promo:hover .promo__arrow,
+  .promo__arrow:focus-visible { opacity: 1; transform: none; }
+}
+
+/* Fila de controles: puntos y pausa (y flechas en celulares) */
+.promo__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+}
+.promo__btn {
+  width: 32px;
+  height: 32px;
+  color: var(--text-2);
+}
+.promo__btn:hover { background: var(--hover); color: var(--text); }
+.promo__btn .icon { width: 16px; height: 16px; stroke-width: 1.7; }
+.promo__btn--play .icon { width: 14px; height: 14px; }
+.promo__btn--play [href="#i-play"] { fill: currentColor; }
+.promo__btn--prev,
+.promo__btn--next { display: none; }
+.promo__dots { display: flex; align-items: center; }
+/* El botón mide 24 px de alto para que sea fácil de tocar; el punto visible es más pequeño. */
+.promo__dot {
+  display: grid;
+  place-items: center;
+  height: 24px;
+  padding: 0 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+.promo__dot i {
+  position: relative;
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--line-strong);
+  overflow: hidden;
+  transition: width 0.45s var(--ease-out), background-color 0.3s;
+}
+.promo__dot:hover i { background: var(--faint); }
+.promo__dot[aria-current] i { width: 28px; background: var(--line-strong); }
+/* Progreso del banner activo: se llena en el intervalo y se detiene en pausa */
+.promo__dot[aria-current] i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--text);
+  transform-origin: left center;
+  transform: scaleX(1);
+}
+.promo.is-ticking .promo__dot[aria-current] i::after {
+  animation: promo-progress var(--promo-interval, 5s) linear both;
+}
+.promo.is-paused .promo__dot[aria-current] i::after { animation-play-state: paused; }
+@keyframes promo-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Tablets y pantallas táctiles grandes: flechas siempre visibles y algo más pequeñas */
+@media (hover: none), (pointer: coarse) {
+  .promo__arrow { width: 38px; height: 38px; margin-top: -19px; }
+  .promo__arrow .icon { width: 18px; height: 18px; }
+}
+
+/* Celulares: el banner es bajo, así que las flechas pasan a la fila de controles */
+@media (max-width: 760px) {
+  .promo { --promo-radius: 10px; margin-bottom: 20px; }
+  .market:has(.promo) { padding-top: calc(var(--header-h) + 14px); }
+  .promo__viewport { aspect-ratio: var(--promo-ratio-m, var(--promo-ratio, 2.43)); }
+  .promo__arrow { display: none; }
+  .promo__btn--prev,
+  .promo__btn--next { display: grid; }
+  .promo__btn--prev { margin-right: auto; }
+  .promo__btn--next { margin-left: auto; }
+  .promo__controls { margin-top: 8px; gap: 2px; }
+}
+
+/* Reducir movimiento: cambio sin fundido ni zoom (no avanza solo, ver promo.js) */
+@media (prefers-reduced-motion: reduce) {
+  .promo__slide, .promo__slide.is-on, .promo__slide img { transition: none; }
+  .promo__slide img { transform: none; }
+}

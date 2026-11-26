@@ -20,6 +20,7 @@ export function market(f) {
   return `
   <section class="market" aria-labelledby="h-market">
     <div class="wrap">
+      <div data-promo-slot></div>
       <header class="welcome">
         <h1 class="welcome__title" id="h-market">Explora nuestra tienda.</h1>
         <p class="welcome__sub">${PRODUCTS.length} productos para cada momento, con envíos a toda Colombia.</p>

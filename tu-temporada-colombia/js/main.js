@@ -11,6 +11,7 @@ import { observe, enterView, swap } from "./shop/motion.js";
 import { prefersReducedMotion } from "./core/env.js";
 import { initTheme } from "./core/theme.js";
 import { initCards } from "./shop/cards.js";
+import { attachPromo, detachPromo } from "./shop/promo.js";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -216,11 +217,13 @@ function route(opts = {}) {
   if (market) {
     if (r.cat !== null) state.filters.cat = r.cat;
     app.innerHTML = V.market(state.filters);
+    attachPromo($("[data-promo-slot]", app));
     bindMarket();
     updateMarket({ animate: false });
     syncChrome();
     if (opts.land || r.land || (prev && prev !== "market")) landOnMarket(false);
   } else {
+    detachPromo();
     if (view === "saved") {
       document.title = "Guardados · Tu Temporada Colombia";
       seo(null);

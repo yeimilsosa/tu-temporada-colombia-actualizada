@@ -216,6 +216,26 @@ producto se hace desde su página. `#catalogo` y `#cat-N` llevan directo al mark
   textos de llegada. El cambio interpola `uDayMode` en los shaders durante 1,4 s.
 - Respaldo sin WebGL: imágenes pre-renderizadas para cada tema (`earth-far/near[-light].webp`).
 
+## Banners publicitarios (carrusel de la portada)
+
+Debajo del header y antes de «Explora nuestra tienda» (`js/shop/promo.js`, datos en `js/data/banners.js`,
+estilos al final de `css/shop.css`).
+
+- Cambia solo cada 5 s (`BANNER_INTERVAL`) con un fundido y, después del último, vuelve al primero.
+- Flechas, puntos (el activo muestra el avance del tiempo), ← → con el foco dentro y swipe en táctil.
+  Cualquier cambio manual reinicia los 5 s. Botón de pausa junto a los puntos.
+- Se pausa con el cursor encima, con el foco del teclado dentro, con la pestaña oculta y cuando el banner
+  sale de la pantalla. Con «reducir movimiento» no avanza solo.
+- Proporción fija (media de los banners): la página no salta al cargar y las imágenes no se deforman.
+  En celulares las flechas pasan a la fila de controles para no tapar el diseño.
+- Solo se descarga el primer banner (prioridad alta); el siguiente se precarga y el cambio espera a que
+  la imagen esté lista. Cada banner existe en 640, 1280 y 1920 px y el navegador elige el adecuado.
+- Al tocarlo lleva al catálogo (campo `href`).
+
+**Agregar un banner:** copiar la imagen en `banners-fuente/`, ejecutar `python3 scripts/prepare_banners.py`
+y pegar en `js/data/banners.js` la línea que imprime el script. Para quitarlo, borrar su línea.
+Admite versión vertical para celulares (campo `mobile`; ver el comentario en `js/data/banners.js`).
+
 ## Tarjetas del catálogo: fotos y guardados
 
 - **Fotos:** si un producto tiene más de una foto, la tarjeta muestra flechas finas al pasar el cursor y
