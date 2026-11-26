@@ -737,6 +737,22 @@ export const PRODUCTS = [
    "assets/img/products/engorilate-xx-premium.webp"
   ],
   "id": "ENGORILATE-XX-PREMIUM"
+ },
+
+ {
+  "n": "ENGORILATE XX TRADICIONAL",
+  "c": "SALUD",
+  "p": 99900,
+  "f": [
+   "Incluye 15 sachets de 20 ml cada uno",
+   "Concentrado líquido a base de frutas, buena fuente de vitaminas y minerales",
+   "Ingredientes indicados en el empaque: chontaduro, borojó, noni y guaraná",
+   "Contiene edulcorantes"
+  ],
+  "img": [
+   "assets/img/products/engorilate-xx-tradicional.webp"
+  ],
+  "id": "ENGORILATE-XX-TRADICIONAL"
  }
 
 ];
