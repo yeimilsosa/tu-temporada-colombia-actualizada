@@ -1,5 +1,5 @@
 /**
- * Fotografías de estudio (fondo beige) del catálogo. Hay dos orígenes:
+ * Fotografías de estudio del catálogo (fondo celeste brumoso #CFE0EA desde nov. 2026; ver scripts/fondo-celeste/). Hay dos orígenes:
  *  - las imágenes del paquete nuevo que coinciden con el artículo real (primer bloque), y
  *  - las fotos originales del catálogo, recortadas y puestas sobre el mismo fondo (segundo bloque).
  *

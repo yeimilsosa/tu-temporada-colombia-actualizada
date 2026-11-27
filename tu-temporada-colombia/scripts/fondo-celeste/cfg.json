@@ -1,0 +1,48 @@
+{
+ "engorilate-xx-tradicional": {
+  "erase_out": [
+   {
+    "box": [
+     0.03,
+     0.03,
+     0.4,
+     0.395
+    ],
+    "spare": [
+     0.24,
+     0.215,
+     0.142
+    ]
+   },
+   {
+    "box": [
+     0.905,
+     0.52,
+     0.98,
+     0.7
+    ]
+   }
+  ]
+ },
+ "engorilate-xx-premium-500ml": {
+  "hull_dark": 70
+ },
+ "carro-antigravedad-con-control-remoto-rojo": {
+  "tint": 22
+ },
+ "carro-antigravedad-con-control-remoto-azul": {
+  "tint": 22
+ },
+ "pistola-burbuja-132-huecos": {
+  "tint": 22
+ },
+ "mini-aspiradora-robot": {
+  "tint": 22
+ },
+ "licuadora-portatil-digital-inalambrica": {
+  "tint": 22
+ },
+ "vinagre-de-manzana-en-gomitas": {
+  "tint": 22
+ }
+}
