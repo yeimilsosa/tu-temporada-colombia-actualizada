@@ -16,6 +16,7 @@
 export const STUDIO = {
   "Nivel Láser 16 Líneas": { main: "nivel-laser-16-lineas-v2" },
   "Guadaña Eléctrica": { main: "guadana-electrica", all: true },
+  "Pulidora Inalámbrica 128VT ST10": { main: "pulidora-inalambrica-128vt-st10", all: true },
   "Soldador Inverter 3 en 1": { main: "soldador-inverter-3-en-1" },
   "Maleta Antirrobo Semipermeable Cuerina Alta Calidad": { main: "maleta-antirrobo" },
   "Comedero para Mascotas de Rodillo": { main: "comedero-mascotas-rodillo" },

@@ -763,6 +763,35 @@ export const PRODUCTS = [
    "assets/img/products/engorilate-xx-premium-500ml.webp"
   ],
   "id": "ENGORILATE-XX-PREMIUM-500ML"
+ },
+
+ {
+  "n": "Pulidora Inalámbrica 128VT ST10",
+  "c": "EQUIPOS",
+  "p": 200000,
+  "f": [
+   "Pulidora inalámbrica 128V ST10 con tecnología Brushless, diseñada para ofrecer comodidad, movilidad y versatilidad en diferentes trabajos de corte y desbaste.",
+   "## Incluye",
+   "Pulidora inalámbrica 128V",
+   "2 baterías recargables XR 5.0 Ah",
+   "Cargador",
+   "Mango auxiliar",
+   "Protector de disco",
+   "Llave de ajuste",
+   "Maletín rígido de transporte",
+   "## Características principales",
+   "Tecnología Brushless",
+   "2 baterías recargables",
+   "Diseño ergonómico",
+   "Mango auxiliar para mejor control",
+   "Protector de seguridad",
+   "Kit portátil y fácil de transportar",
+   "Ideal para múltiples trabajos de corte y desbaste"
+  ],
+  "img": [
+   "assets/img/products/pulidora-inalambrica-128vt-st10-anuncio.webp"
+  ],
+  "id": "2275150"
  }
 
 ];
