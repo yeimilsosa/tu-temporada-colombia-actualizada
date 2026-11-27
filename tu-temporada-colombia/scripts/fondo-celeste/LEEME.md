@@ -16,3 +16,7 @@ No se procesaron las 8 fotos publicitarias o de uso de la galería (3 de la guad
 logo, 5 de la licuadora con frutas y manos): no tienen un fondo liso que cambiar.
 
 Las rutas de `seg.py` y `compose.py` apuntan a /home/claude/bg; ajustarlas antes de volver a correr.
+
+**Revertido el mismo 26 de noviembre de 2026:** la tienda volvió al fondo beige de estudio. Las
+fotos de `estudio/` se restauraron de la versión anterior; las 4 de ENGORILATE y la del cargador
+(que antes no tenían el beige) se compusieron sobre él con `scripts/fondo-estudio/compose.py`.

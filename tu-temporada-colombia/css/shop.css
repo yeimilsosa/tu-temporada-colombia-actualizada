@@ -198,7 +198,7 @@ body:not(.is-market) .app { padding-top: var(--header-h); }
 .card__media {
   position: relative;
   aspect-ratio: 1 / 1;
-  background: var(--photo-bg);
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 10px;
   overflow: hidden;
@@ -472,7 +472,7 @@ body:not(.is-market) .app { padding-top: var(--header-h); }
 .seg button .icon { width: 15px; height: 15px; }
 .seg button[aria-pressed="true"] { background: var(--text); color: var(--surface); }
 .gallery__count { font-size: var(--fs-xs); color: var(--muted); font-variant-numeric: tabular-nums; }
-.stage { position: relative; background: var(--photo-bg); border-radius: var(--radius); overflow: hidden; }
+.stage { position: relative; background: var(--surface); border-radius: var(--radius); overflow: hidden; }
 .stage__track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; }
 .stage__track::-webkit-scrollbar { display: none; }
 .stage__slide { flex: 0 0 100%; aspect-ratio: 1; scroll-snap-align: center; scroll-snap-stop: always; display: grid; place-items: center; cursor: zoom-in; padding: 0; }
@@ -500,7 +500,7 @@ body:not(.is-market) .app { padding-top: var(--header-h); }
 .stage__caption b { font-weight: 500; }
 .stage__caption span { color: var(--muted); font-weight: 400; }
 .thumbs { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; scrollbar-width: thin; padding-bottom: 4px; }
-.thumbs button { flex: none; width: 64px; height: 64px; border-radius: 6px; background: var(--photo-bg); overflow: hidden; opacity: 0.55; outline-offset: -2px; transition: opacity 0.25s, box-shadow 0.25s; }
+.thumbs button { flex: none; width: 64px; height: 64px; border-radius: 6px; background: var(--surface); overflow: hidden; opacity: 0.55; outline-offset: -2px; transition: opacity 0.25s, box-shadow 0.25s; }
 .thumbs button[aria-current="true"] { opacity: 1; box-shadow: inset 0 0 0 1px var(--text); }
 .thumbs img { width: 100%; height: 100%; object-fit: contain; padding: 6%; }
 .mosaic { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
@@ -509,7 +509,7 @@ body:not(.is-market) .app { padding-top: var(--header-h); }
 .seg--cols button { min-width: 34px; justify-content: center; padding: 0 10px; font-variant-numeric: tabular-nums; }
 @media (max-width: 899px) { .mosaic[data-cols="4"] { grid-template-columns: repeat(3, minmax(0, 1fr)); } .seg--cols .cols-4 { display: none; } }
 @media (max-width: 559px) { .mosaic[data-cols="3"], .mosaic[data-cols="4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); } .seg--cols .cols-3 { display: none; } }
-.mosaic button { background: var(--photo-bg); border-radius: 6px; overflow: hidden; aspect-ratio: 1; cursor: zoom-in; }
+.mosaic button { background: var(--surface); border-radius: 6px; overflow: hidden; aspect-ratio: 1; cursor: zoom-in; }
 .mosaic img { width: 100%; height: 100%; object-fit: contain; padding: 6%; transition: transform 0.6s var(--ease-out); }
 .mosaic button:hover img { transform: scale(1.03); }
 .stage--empty { aspect-ratio: 1; display: grid; place-content: center; justify-items: center; gap: 10px; color: var(--faint); font-size: var(--fs-sm); }
@@ -562,12 +562,7 @@ body:not(.is-market) .app { padding-top: var(--header-h); }
   .lightbox__cap { bottom: 26px; padding: 0 72px; }
 }
 
-/* ---------- Fotos de producto (fondo celeste brumoso #CFE0EA) ----------
-   Todas las fotos de producto llevan el mismo fondo plano; los marcos de foto usan ese color
-   para que una foto que no es cuadrada (botellas de 500 ml) o que tiene margen se vea continua. */
-:root { --photo-bg: #cfe0ea; }
-
-/* ---------- Fotos de estudio ----------
+/* ---------- Fotos de estudio (fondo beige) ----------
    Son cuadradas y traen su propio fondo: ocupan todo el cuadro, sin margen interior.
    contain con una foto 1:1 en un cuadro 1:1 llena el cuadro sin recortar ni deformar. */
 .card__slides img.is-studio,
@@ -984,7 +979,7 @@ html.popup-open { overflow: hidden; }
 @media (hover: hover) { .sc-card:hover { border-color: var(--line-strong); box-shadow: var(--shadow); } }
 
 /* Foto 1:1 completa, centrada y sin deformar (object-fit: contain). */
-.sc-card__media { position: relative; display: block; aspect-ratio: 1 / 1; overflow: hidden; background: var(--photo-bg); -webkit-user-drag: none; }
+.sc-card__media { position: relative; display: block; aspect-ratio: 1 / 1; overflow: hidden; -webkit-user-drag: none; }
 .sc-card__media img {
   position: absolute;
   inset: 0;
@@ -995,7 +990,7 @@ html.popup-open { overflow: hidden; }
   user-select: none;
   -webkit-user-drag: none;
 }
-.sc-card__media img.is-studio { padding: 0; object-fit: contain; }
+.sc-card__media img.is-studio { padding: 0; object-fit: cover; }
 .sc-card__fav { position: absolute; z-index: 2; }
 .sc-card__info { display: flex; flex-direction: column; flex: 1; padding: 14px 16px 16px; border-top: 1px solid var(--line); }
 .sc-card__cat { font-size: var(--fs-xs); color: var(--muted); }
@@ -1030,10 +1025,12 @@ html.popup-open { overflow: hidden; }
   aspect-ratio: auto;
   margin: 10px 0 10px 10px;
   border-radius: 10px;
-  background: var(--photo-bg);
+  background: var(--surface);
 }
 .sc-card--featured .sc-card__media img { padding: 5%; }
-.sc-card--featured .sc-card__media img.is-studio { padding: 0; }
+/* Foto de estudio (cuadrada, fondo beige a sangre): cuadro 1:1 para mostrarla completa. */
+@media (min-width: 641px) { .sc-card--featured .sc-card__media:has(img.is-studio) { aspect-ratio: 1 / 1; align-self: center; } }
+.sc-card--featured .sc-card__media img.is-studio { padding: 0; object-fit: contain; }
 .sc-card--featured .sc-card__info { justify-content: center; border-top: 0; padding: 56px 22px 22px; }
 .sc-card--featured .sc-card__cat { color: color-mix(in srgb, var(--surface) 62%, transparent); }
 .sc-card--featured .sc-card__name { font-size: clamp(1.125rem, 0.9rem + 0.7vw, 1.5rem); line-height: 1.2; -webkit-line-clamp: 3; min-height: 0; }

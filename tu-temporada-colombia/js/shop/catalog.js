@@ -42,7 +42,7 @@ export function productImages(p) {
   return [...new Set(out)];
 }
 export const small = (src) => asset(src.replace(/\.webp$/, "-sm.webp"));
-/** Fotos de producto con fondo propio a sangre (celeste #CFE0EA): se muestran sin margen interior.
+/** Fotos de estudio (fondo beige a sangre): se muestran sin margen interior.
  * Son las de assets/img/products/estudio/ y las de ENGORILATE y el cargador, que no están en esa carpeta. */
 export const isStudio = (src) => /\/estudio\/|\/engorilate-xx-|\/cargador-inalambrico-3-en-1-collage/.test(src || "");
 export const studioClass = (src) => (isStudio(src) ? ' class="is-studio"' : "");
