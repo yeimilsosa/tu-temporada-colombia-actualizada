@@ -493,7 +493,7 @@ export const PRODUCTS = [
  {
   "n": "Ventilador Portátil de Cuello",
   "c": "TECNOLOGIA",
-  "p": null,
+  "p": 60000,
   "f": [
    "Diseño portátil tipo collar para llevar alrededor del cuello",
    "Uso manos libres: no requiere sostenerlo con las manos",

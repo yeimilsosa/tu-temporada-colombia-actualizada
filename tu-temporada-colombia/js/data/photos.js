@@ -7,6 +7,8 @@
  * producto (o de la variante). Con SHOW_ORIGINALS = false (más abajo) solo se muestran las fotos
  * beige. Para revertir un producto basta con quitar su línea.
  *
+ * Opción `extra: ["archivo", ...]`: fotos de estudio adicionales del producto, en su galería.
+ *
  * Opción `all: true` en un producto: la foto de estudio queda de portada y se muestran también sus
  * fotos del catálogo (útil cuando el producto tiene varias fotos reales que se quieren conservar).
  * Clave: nombre exacto del producto en js/data/catalog.js. Valor: nombre del archivo en
@@ -72,7 +74,7 @@ export const STUDIO = {
   "Organizador de Baúl para Carro Plegable": { main: "organizador-de-baul-para-carro-plegable" },
   "Vinagre de Manzana en Gomitas": { main: "vinagre-de-manzana-en-gomitas" },
   "Cargador Inalámbrico 3 en 1": { main: "cargador-inalambrico-3-en-1", all: true },
-  "Ventilador Portátil de Cuello": { main: "ventilador-portatil-de-cuello" },
+  "Ventilador Portátil de Cuello": { main: "ventilador-portatil-de-cuello", extra: ["ventilador-portatil-de-cuello-caja"] },
   "Scooter Eléctrico con Luces": {
     main: "scooter-electrica-con-luces-led-kidshop-rojo",
     v: {
@@ -118,6 +120,8 @@ export function applyStudio(products) {
     const showAll = SHOW_ORIGINALS || cfg.all;
     const keep = (list, first) => (showAll ? [first, ...(list || []).filter((s) => s !== first)] : [first]);
     if (cfg.main) { p.img = keep(p.img, path(cfg.main)); if (!showAll) p.s = []; }
+    // extra: más fotos de estudio del mismo producto, en la galería detrás de la portada.
+    if (cfg.extra) p.img = [p.img[0], ...cfg.extra.map(path), ...p.img.slice(1)];
     for (const [vn, file] of Object.entries(cfg.v || {})) {
       const v = (p.v || []).find((x) => x.n === vn);
       if (!v) { console.warn("[fotos] Variante no encontrada:", name, vn); continue; }
