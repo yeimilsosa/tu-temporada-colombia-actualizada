@@ -792,6 +792,34 @@ export const PRODUCTS = [
    "assets/img/products/pulidora-inalambrica-128vt-st10-anuncio.webp"
   ],
   "id": "2275150"
+ },
+
+ {
+  "n": "Hidro Lavadora 2 Baterías Cinta Láser",
+  "c": "EQUIPOS",
+  "p": 120000,
+  "f": [
+   "¡Todo lo que necesitas para limpiar y realizar tus proyectos con precisión! Hidro lavadora inalámbrica con 2 baterías y un nivel láser multifuncional: ideal para la limpieza de vehículos, el hogar, el jardín y trabajos de bricolaje.",
+   "## Pistola de agua de alta presión inalámbrica",
+   "Limpia fácilmente y sin cables, en el hogar, el vehículo y el jardín",
+   "Batería recargable de 4000 mAh",
+   "Succiona agua de baldes, botellas o estanques, sin conexión directa a una manguera de jardín",
+   "Ideal para lavar carros, motos, bicicletas, patios, ventanas y fachadas",
+   "También permite regar plantas y aplicar líquidos para jardinería",
+   "Material ABS resistente; diseño ergonómico, portátil y de color negro",
+   "## Nivel láser multifuncional de precisión",
+   "Mide, nivela y alinea con precisión en trabajos de instalación, construcción y bricolaje",
+   "Láser integrado",
+   "3 burbujas de nivelación: horizontal, vertical y 45°",
+   "Diseño compacto, ligero y fácil de utilizar",
+   "Distancia máxima de medición de 2,5 metros",
+   "Funciona con pilas AG13 (incluidas)"
+  ],
+  "img": [
+   "assets/img/products/hidro-lavadora-2-baterias-cinta-laser-nivel-anuncio.webp",
+   "assets/img/products/hidro-lavadora-2-baterias-cinta-laser-instalacion.webp"
+  ],
+  "id": "1967654"
  }
 
 ];
